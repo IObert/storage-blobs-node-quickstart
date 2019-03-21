@@ -1,11 +1,12 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').load();
-}
-
+const credentials = require('./credentials')
 const path = require('path');
 const storage = require('azure-storage');
 
-const blobService = storage.createBlobService();
+console.log(credentials)
+
+const blobService = storage.createBlobService(credentials.storageAccountName,
+  credentials.accessKey, credentials.primaryBlobServiceEndPoint);
+
 
 const listContainers = async () => {
     return new Promise((resolve, reject) => {
@@ -138,11 +139,11 @@ const execute = async () => {
     response = await downloadBlob(containerName, blobName);
     console.log(`Downloaded blob content: ${response.text}"`);
 
-    await deleteBlob(containerName, blobName);
-    console.log(`Blob "${blobName}" is deleted`);
-
-    await deleteContainer(containerName);
-    console.log(`Container "${containerName}" is deleted`);
+    // await deleteBlob(containerName, blobName);
+    // console.log(`Blob "${blobName}" is deleted`);
+    //
+    // await deleteContainer(containerName);
+    // console.log(`Container "${containerName}" is deleted`);
 
 }
 
